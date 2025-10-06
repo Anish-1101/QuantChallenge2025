@@ -1,27 +1,12 @@
-# QuantChallenge Starter Repo
+Overview
+QuantChallenge2025 - Anish Athmakoor & Ted Smith Submission
 
-This is the starter repo to help you get started with QuantChallenge 2025.
+This repo contains two parts: a modeling workflow to predict targets (Y1, Y2) from time-ordered data, and a live trading bot that reacts to basketball game events to trade a win-probability contract.
 
-## Sylvian Extension
+Research (prediction)
 
-Make sure you have installed the [Sylvian extension](https://marketplace.visualstudio.com/items?itemName=SylvianAI.sylvian) and initialized it. **This is required to be eligible for prizes!**
-1. Go to the command palette (⇧⌘P on Mac, Ctrl + Shift + P otherwise)
-2. Search for 'Sylvian: Initialize Sylvian'
-3. Enter the email you used for the competition
+We treat the data as a time-ordered stream of market indicators, align multiple sources into a single timeline, and transform them into simple signals such as recent levels, short-term changes, and rolling summaries to capture trend and momentum. Models are evaluated with walk-forward time-series validation to prevent leakage, we compare several forecasters and keep those that generalize best, then average them to produce stable predictions for Y1 and Y2.
 
-If done correctly, your .competition file should include `email=your_email_here`. **DO NOT EDIT THIS .competition FILE**!
+Trading (live strategy)
 
-After having worked in your repository for a little, you should be able to go to quantchallenge.org > Dashboard > Settings and see that the extension is active. If it is not active, please contact support in the Discord!
-
-## Directories
-
-This repo consists of two folders: /research and /trading.
-
-### 1. Research
-The `research` folder contains a IPython notebook `research_starter.ipynb` that helps you get started on the datasets and how to format predictions for submission.
-
-### 2. Trading
-The `trading` folder contains both a C++ and Python template for trading algorithm to be used in the live trading portion of QuantChallenge 2025. For low-latency strategies, we recommend using C++ for a slight performance bump.
-
-## Questions
-If you have any lingering questions, reach out for support on Discord or email info@quantchallenge.org
+The trader ingests real-time events (scores, rebounds, steals, fouls, etc.) and keeps track of score differential, possession, and a short-lived “momentum” signal. It turns these into a continuously updated estimate of the home team’s win chance, which is more sensitive late in the game. When that estimate disagrees with market prices by enough margin, the bot buys or sells; otherwise it places passive quotes and manages inventory. Risk is controlled with caps on exposure, sensible sizing, and automatic flattening near the end of the game.
