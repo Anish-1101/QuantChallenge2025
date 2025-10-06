@@ -1,12 +1,10 @@
-Overview
-
 QuantChallenge2025 - Anish Athmakoor & Ted Smith Submission
 
 This repo contains two parts: a modeling workflow to predict targets (Y1, Y2) from time-ordered data, and a live trading bot that reacts to basketball game events to trade a win-probability contract.
 
 Research (prediction)
 
-The training file has time and features A–N with targets Y1 and Y2, the test file has later times with the same features and an id column. The score is the average R² for Y1 and Y2.
+The training file has time and market features A–N with targets Y1 and Y2, the test file has later times with the same features and an id column. The score is the average R² for Y1 and Y2.
 
 Our implementation treats the data as a timeline, aligns all sources, then builds simple market-style signals from each feature, including recent values, short-term changes, moving averages, and rolling min/max. We keep the time order, use walk-forward validation to avoid leakage, compare several regression models, and average the strongest performers. The result is predictions for Y1 and Y2.
 
